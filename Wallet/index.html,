@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orbit - Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white p-6 font-sans">
+    <div class="max-w-md mx-auto">
+        <h1 class="text-3xl font-black text-yellow-500 mb-2 italic text-center">MY WALLET</h1>
+        <div class="bg-gradient-to-br from-zinc-800 to-zinc-900 border border-white/10 p-8 rounded-[2rem] text-center mb-8 shadow-2xl">
+            <p class="text-zinc-400 text-[10px] uppercase font-bold tracking-widest mb-3">Current Balance</p>
+            <p class="text-5xl font-black text-white">🪙 10</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-10">
+            <button onclick="alert('JazzCash Payment Method Selected')" class="bg-zinc-900 p-5 rounded-3xl border border-zinc-800 text-left">
+                <p class="text-[9px] text-zinc-500 font-bold uppercase">100 Coins</p>
+                <p class="text-lg font-black">Rs. 500</p>
+                <p class="text-[8px] mt-2 text-yellow-600 font-bold">JazzCash</p>
+            </button>
+            <button onclick="alert('EasyPaisa Payment Method Selected')" class="bg-zinc-900 p-5 rounded-3xl border border-zinc-800 text-left">
+                <p class="text-[9px] text-zinc-500 font-bold uppercase">500 Coins</p>
+                <p class="text-lg font-black">Rs. 2000</p>
+                <p class="text-[8px] mt-2 text-green-500 font-bold">EasyPaisa</p>
+            </button>
+        </div>
+        <button onclick="window.location.href='../index.html'" class="w-full bg-white text-black py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Back to Home</button>
+    </div>
+</body>
+</html>
