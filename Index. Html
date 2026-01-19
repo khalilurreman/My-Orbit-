@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orbit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white">
+    <div class="max-w-md mx-auto h-screen border-x border-zinc-800 relative">
+        <div class="absolute top-6 left-6 z-10">
+            <h1 class="text-2xl font-bold text-red-600">MY ORBIT</h1>
+        </div>
+        <div class="h-full flex items-center justify-center bg-zinc-900">
+            <p class="text-zinc-500">Video Loading...</p>
+        </div>
+        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-center">
+            <button onclick="this.innerHTML='❤️'" class="text-3xl">🤍</button>
+            <button onclick="alert('Opening Keyboard...')" class="text-3xl">💬</button>
+            <button onclick="alert('Link Copied!')" class="text-3xl">🔗</button>
+        </div>
+        <button onclick="triggerWarning()" class="absolute top-6 right-6 bg-yellow-600 p-2 rounded-full">⚠️</button>
+    </div>
+
+    <div id="warn-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center p-6 z-50">
+        <div class="bg-white text-black p-8 rounded-3xl text-center">
+            <h2 id="warn-title" class="text-xl font-bold text-red-600 mb-4 uppercase"></h2>
+            <p id="warn-msg" class="mb-6"></p>
+            <button onclick="document.getElementById('warn-modal').classList.add('hidden')" class="bg-black text-white px-6 py-2 rounded-full font-bold">I UNDERSTAND</button>
+        </div>
+    </div>
+
+    <script>
+        let step = 0;
+        function triggerWarning() {
+            step++;
+            const modal = document.getElementById('warn-modal');
+            const title = document.getElementById('warn-title');
+            const msg = document.getElementById('warn-msg');
+            modal.classList.remove('hidden');
+            if(step === 1) {
+                title.innerText = "Video Blocked!";
+                msg.innerText = "Maazrat, aapki video hamari 'Community Guidelines' ke khilaaf hai. MyOrbit par mazhabi toheen mana hai.";
+            } else if(step === 2) {
+                title.innerText = "Violation Alert!";
+                msg.innerText = "Aapki haliya video hata di gayi hai. Doosri warning record ho gayi hai.";
+            } else {
+                title.innerText = "Final Warning!";
+                msg.innerText = "Agar dobara aisa kiya, toh aapka account delete kar diya jayega.";
+            }
+        }
+    </script>
+</body>
+</html>
