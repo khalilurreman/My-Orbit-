@@ -3,22 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orbit - Final Fix</title>
+    <title>My Orbit - Pro Version</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .logo-gradient {
             background: linear-gradient(to right, #ff4b2b, #ff416c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.8rem; /* Size chota kiya taaki ek line mein aaye */
+            font-size: 1.6rem;
             font-weight: 900;
             font-family: 'Arial Black', sans-serif;
         }
-        .social-btn {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 70px;
+        .coin-box {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            color: black;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        .live-btn {
+            background: #ff0000;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -27,39 +39,45 @@
     <div class="max-w-md mx-auto h-screen border-x border-zinc-800 relative flex flex-col">
         
         <div class="flex justify-between items-center p-4 bg-zinc-900 border-b border-zinc-700 z-20">
-            <h1 class="logo-gradient uppercase">MY ORBIT</h1>
-            <button onclick="triggerWarning()" class="bg-yellow-500 text-black p-2 rounded-full shadow-lg">⚠️</button>
+            <div>
+                <h1 class="logo-gradient uppercase">MY ORBIT</h1>
+                <div class="coin-box">🪙 Coins: <span id="user-coins">0</span></div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="alert('Live Stream Starting... Camera Access Required')" class="live-btn text-white text-xs px-3 py-1 rounded-full font-bold uppercase">● LIVE</button>
+                <button onclick="triggerWarning()" class="bg-yellow-500 text-black p-2 rounded-full">⚠️</button>
+            </div>
         </div>
 
         <div id="media-container" class="flex-grow flex items-center justify-center bg-zinc-800 relative">
-            <video id="main-video" class="hidden w-full h-full object-contain" controls autoplay loop muted playsinline></video>
-            <img id="main-image" class="hidden w-full h-full object-contain" alt="Upload">
-            
-            <p id="placeholder" class="text-zinc-500 text-center p-6 text-lg">
-                Click (+) niche se video ya photo select karein
-            </p>
+            <video id="main-video" class="hidden w-full h-full object-contain" controls autoplay loop playsinline></video>
+            <img id="main-image" class="hidden w-full h-full object-contain">
+            <div id="placeholder" class="text-center p-6">
+                <p class="text-zinc-500 text-lg mb-4">Gallery se Video ya Photo uthayein</p>
+                <div class="text-4xl animate-bounce">👇</div>
+            </div>
         </div>
 
-        <div class="flex justify-around items-center p-4 bg-zinc-900 border-t border-zinc-700 z-20">
-            <label class="flex flex-col items-center cursor-pointer social-btn py-2 rounded-xl">
+        <div class="grid grid-cols-4 gap-1 p-4 bg-zinc-900 border-t border-zinc-700 z-20">
+            <label class="flex flex-col items-center cursor-pointer bg-white/10 p-2 rounded-xl border border-white/20">
                 <span class="text-2xl">➕</span>
-                <span class="text-[10px] uppercase font-bold">Upload</span>
-                <input type="file" accept="video/*,image/*" onchange="handleFile(event)" class="hidden">
+                <span class="text-[9px] uppercase font-bold">Upload</span>
+                <input type="file" onchange="handleFile(event)" class="hidden">
             </label>
 
-            <button onclick="handleLike()" class="flex flex-col items-center social-btn py-2 rounded-xl">
+            <button onclick="handleLike()" class="flex flex-col items-center bg-white/10 p-2 rounded-xl border border-white/20">
                 <span id="like-heart" class="text-2xl">🤍</span>
-                <span class="text-[10px] uppercase font-bold">Like (<span id="count">0</span>)</span>
+                <span class="text-[9px] uppercase font-bold">Like (<span id="count">0</span>)</span>
             </button>
 
-            <button onclick="alert('Manual Review Request: Aapki appeal Bilal Ahmed ke record ke liye bhej di gayi hai.')" class="flex flex-col items-center social-btn py-2 rounded-xl">
+            <button onclick="alert('Appeal Sent! Bilal Ahmed, hum jald hi review karenge.')" class="flex flex-col items-center bg-white/10 p-2 rounded-xl border border-white/20">
                 <span class="text-2xl">💬</span>
-                <span class="text-[10px] uppercase font-bold">Review</span>
+                <span class="text-[9px] uppercase font-bold">Review</span>
             </button>
 
-            <button onclick="copyLink()" class="flex flex-col items-center social-btn py-2 rounded-xl">
+            <button onclick="copyLink()" class="flex flex-col items-center bg-white/10 p-2 rounded-xl border border-white/20">
                 <span class="text-2xl">🔗</span>
-                <span class="text-[10px] uppercase font-bold">Share</span>
+                <span class="text-[9px] uppercase font-bold">Share</span>
             </button>
         </div>
     </div>
@@ -68,13 +86,37 @@
         <div class="bg-white text-black p-8 rounded-3xl text-center max-w-sm border-4 border-red-600">
             <h2 id="warn-title" class="text-2xl font-bold text-red-600 mb-4 uppercase"></h2>
             <p id="warn-msg" class="text-lg font-medium mb-6"></p>
-            <button onclick="document.getElementById('warn-modal').classList.add('hidden')" class="bg-black text-white px-8 py-3 rounded-xl font-bold w-full">SAMAJH GAYA</button>
+            <button onclick="document.getElementById('warn-modal').classList.add('hidden')" class="bg-black text-white px-8 py-3 rounded-xl font-bold w-full">OKAY</button>
         </div>
     </div>
 
     <script>
         let warningStep = 0;
         let likes = 0;
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const video = document.getElementById('main-video');
+            const image = document.getElementById('main-image');
+            const placeholder = document.getElementById('placeholder');
+            
+            placeholder.classList.add('hidden');
+            const url = URL.createObjectURL(file);
+
+            if (file.type.includes('video')) {
+                video.src = url;
+                video.classList.remove('hidden');
+                image.classList.add('hidden');
+                video.load();
+                video.play();
+            } else {
+                image.src = url;
+                image.classList.remove('hidden');
+                video.classList.add('hidden');
+            }
+        }
 
         function triggerWarning() {
             warningStep++;
@@ -88,36 +130,11 @@
                 msg.innerText = "Maazrat, aapki video hamari 'Community Guidelines' ke khilaaf hai. MyOrbit par kisi bhi mazhab, shakhsiyat ya aqeeday ki toheen sakhti se mana hai.";
             } else if (warningStep === 2) {
                 title.innerText = "Violation Alert!";
-                msg.innerText = "Aapki haliya video 'Religious Hate Speech' ki wajah se hata di gayi hai. MyOrbit ko ek mehfooz jagah banaye rakhne mein hamari madad karein.";
+                msg.innerText = "Aapki haliya video 'Religious Hate Speech' ki wajah se hata di gayi hai.";
             } else {
                 title.innerText = "Final Warning!";
-                msg.innerText = "Aap baar-baar rules tod rahe hain. Agar aapne ek baar phir aisi video upload ki, toh aapka account hamesha ke liye delete kar diya jayega.";
+                msg.innerText = "Aap baar-baar rules tod rahe hain. Agli baar aapka account hamesha ke liye delete kar diya jayega.";
                 warningStep = 0;
-            }
-        }
-
-        function handleFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const video = document.getElementById('main-video');
-            const image = document.getElementById('main-image');
-            const placeholder = document.getElementById('placeholder');
-            
-            placeholder.classList.add('hidden');
-            const url = URL.createObjectURL(file);
-
-            if (file.type.startsWith('video/')) {
-                video.src = url;
-                video.classList.remove('hidden');
-                image.classList.add('hidden');
-                video.load(); // Video load karna zaroori hai
-                video.play().catch(e => console.log("Auto-play blocked"));
-            } else if (file.type.startsWith('image/')) {
-                image.src = url;
-                image.classList.remove('hidden');
-                video.classList.add('hidden');
-                video.pause();
             }
         }
 
@@ -125,11 +142,14 @@
             likes++;
             document.getElementById('count').innerText = likes;
             document.getElementById('like-heart').innerText = '❤️';
+            // Reward coins for likes
+            let coins = parseInt(document.getElementById('user-coins').innerText);
+            document.getElementById('user-coins').innerText = coins + 5;
         }
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
-            alert("App link copy ho gaya hai! Ab aap ise kisi ko bhi bhej sakte hain.");
+            alert("App link copy ho gaya!");
         }
     </script>
 </body>
