@@ -3,51 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orbit</title>
+    <title>My Orbit - Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .logo-gradient {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: -2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .social-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
-<body class="bg-black text-white">
-    <div class="max-w-md mx-auto h-screen border-x border-zinc-800 relative">
-        <div class="absolute top-6 left-6 z-10">
-            <h1 class="text-2xl font-bold text-red-600">MY ORBIT</h1>
+<body class="bg-black text-white font-sans overflow-hidden">
+
+    <div class="max-w-md mx-auto h-screen border-x border-zinc-800 relative flex flex-col">
+        
+        <div class="flex justify-between items-center p-4 bg-zinc-900 border-b border-zinc-700 z-20">
+            <h1 class="logo-gradient">MY ORBIT</h1>
+            <button onclick="triggerWarning()" class="bg-yellow-500 text-black p-3 rounded-full shadow-lg">⚠️</button>
         </div>
-        <div class="h-full flex items-center justify-center bg-zinc-900">
-            <p class="text-zinc-500">Video Loading...</p>
+
+        <div id="media-container" class="flex-grow flex items-center justify-center bg-zinc-900 relative">
+            <video id="main-video" class="max-h-full max-w-full hidden" controls autoplay loop muted></video>
+            <img id="main-image" class="max-h-full max-w-full hidden" alt="Upload">
+            <p id="placeholder" class="text-zinc-500 text-xl animate-pulse text-center p-4">Click (+) to upload Video or Photo</p>
         </div>
-        <div class="absolute right-4 bottom-32 flex flex-col gap-6 text-center">
-            <button onclick="this.innerHTML='❤️'" class="text-3xl">🤍</button>
-            <button onclick="alert('Opening Keyboard...')" class="text-3xl">💬</button>
-            <button onclick="alert('Link Copied!')" class="text-3xl">🔗</button>
+
+        <div class="flex justify-around items-center p-4 bg-zinc-900 border-t border-zinc-700 z-20">
+            <label class="flex flex-col items-center cursor-pointer social-btn p-2 rounded-lg">
+                <span class="text-2xl">➕</span>
+                <span class="text-xs">Upload</span>
+                <input type="file" accept="video/*,image/*" onchange="handleFile(event)" class="hidden">
+            </label>
+            <button onclick="handleLike()" class="flex flex-col items-center social-btn p-2 rounded-lg">
+                <span id="like-heart" class="text-2xl">🤍</span>
+                <span class="text-xs">Like (<span id="count">0</span>)</span>
+            </button>
+            <button onclick="alert('Manual Review Request: Aapki request bhej di gayi hai.')" class="flex flex-col items-center social-btn p-2 rounded-lg">
+                <span class="text-2xl">💬</span>
+                <span class="text-xs">Review</span>
+            </button>
+            <button onclick="alert('Link Copied!')" class="flex flex-col items-center social-btn p-2 rounded-lg">
+                <span class="text-2xl">🔗</span>
+                <span class="text-xs">Share</span>
+            </button>
         </div>
-        <button onclick="triggerWarning()" class="absolute top-6 right-6 bg-yellow-600 p-2 rounded-full">⚠️</button>
     </div>
 
-    <div id="warn-modal" class="hidden fixed inset-0 bg-black/95 flex items-center justify-center p-6 z-50">
-        <div class="bg-white text-black p-8 rounded-3xl text-center">
-            <h2 id="warn-title" class="text-xl font-bold text-red-600 mb-4 uppercase"></h2>
-            <p id="warn-msg" class="mb-6"></p>
-            <button onclick="document.getElementById('warn-modal').classList.add('hidden')" class="bg-black text-white px-6 py-2 rounded-full font-bold">I UNDERSTAND</button>
+    <div id="warn-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center p-6 z-[100]">
+        <div class="bg-white text-black p-8 rounded-3xl text-center max-w-sm border-4 border-red-600">
+            <h2 id="warn-title" class="text-2xl font-bold text-red-600 mb-4 uppercase"></h2>
+            <p id="warn-msg" class="text-lg font-medium mb-6"></p>
+            <button onclick="document.getElementById('warn-modal').classList.add('hidden')" class="bg-black text-white px-8 py-3 rounded-xl font-bold">Samajh Gaya</button>
         </div>
     </div>
 
     <script>
-        let step = 0;
+        let warningStep = 0;
+        let likes = 0;
+
         function triggerWarning() {
-            step++;
+            warningStep++;
             const modal = document.getElementById('warn-modal');
             const title = document.getElementById('warn-title');
             const msg = document.getElementById('warn-msg');
             modal.classList.remove('hidden');
-            if(step === 1) {
+
+            if (warningStep === 1) {
                 title.innerText = "Video Blocked!";
-                msg.innerText = "Maazrat, aapki video hamari 'Community Guidelines' ke khilaaf hai. MyOrbit par mazhabi toheen mana hai.";
-            } else if(step === 2) {
+                msg.innerText = "Maazrat, aapki video hamari 'Community Guidelines' ke khilaaf hai. MyOrbit par kisi bhi mazhab, shakhsiyat ya aqeeday ki toheen sakhti se mana hai. Agli baar aisa karne par aapka account ban kiya ja sakta hai.";
+            } else if (warningStep === 2) {
                 title.innerText = "Violation Alert!";
-                msg.innerText = "Aapki haliya video hata di gayi hai. Doosri warning record ho gayi hai.";
+                msg.innerText = "Aapki haliya video 'Religious Hate Speech' ki wajah se hata di gayi hai. MyOrbit ko ek mehfooz jagah banaye rakhne mein hamari madad karein.";
             } else {
                 title.innerText = "Final Warning!";
-                msg.innerText = "Agar dobara aisa kiya, toh aapka account delete kar diya jayega.";
+                msg.innerText = "Aap baar-baar rules tod rahe hain. Agar aapne ek baar phir aisi video upload ki, toh aapka account hamesha ke liye delete kar diya jayega.";
+                warningStep = 0;
             }
+        }
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            const video = document.getElementById('main-video');
+            const image = document.getElementById('main-image');
+            const placeholder = document.getElementById('placeholder');
+            
+            placeholder.classList.add('hidden');
+            const url = URL.createObjectURL(file);
+
+            if (file.type.startsWith('video/')) {
+                video.src = url;
+                video.classList.remove('hidden');
+                image.classList.add('hidden');
+                video.play();
+            } else {
+                image.src = url;
+                image.classList.remove('hidden');
+                video.classList.add('hidden');
+            }
+        }
+
+        function handleLike() {
+            likes++;
+            document.getElementById('count').innerText = likes;
+            document.getElementById('like-heart').innerText = '❤️';
         }
     </script>
 </body>
